@@ -25,17 +25,17 @@ def show_calc(hp,dex,ac,sac,move_list):
         title = sys.argv[1]
     else:
         title = "pokemon_test"
-    f = open(title+".txt","a")
-    f.write(pokemon_name+"\n")
-    f.write("\n")
-    f.write("HP: "+ str(hp)+ "\n")
-    f.write("DEX: "+ str(dex)+"\n")
-    f.write("AC : "+ str(ac)+"\n")
-    f.write("SAC: "+ str(sac)+"\n")
-    for x in move_list:
-        f.write(x+"\n")
-    f.write("\n")
-    f.close()
+    with open(title+".txt","a") as f
+        f.write(pokemon_name+"\n")
+        f.write("\n")
+        f.write("HP: "+ str(hp)+ "\n")
+        f.write("DEX: "+ str(dex)+"\n")
+        f.write("AC : "+ str(ac)+"\n")
+        f.write("SAC: "+ str(sac)+"\n")
+        for x in move_list:
+            f.write(x+"\n")
+        f.write("\n")
+#     f.close()
     # print("HP: ",hp)
     # print("DEX: ",dex)
     # print("AC : ",ac)
@@ -62,9 +62,9 @@ def move_calc():
 
         
         flag1 = input("Is the Pokemon move a special or physical move [p/s]")
-        if flag1 == 's':
+        if flag1 == 's' or flag1 == 'S':
             att = int((pokemon_att*0.1)/2)
-        elif flag1 == 'p':
+        elif flag1 == 'p' or flag1 == 'P':
             att = int((pokemon_sp_att*0.1)/2)
 
 
