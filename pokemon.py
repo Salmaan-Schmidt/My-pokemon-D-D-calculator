@@ -25,7 +25,7 @@ def show_calc(hp,dex,ac,sac,move_list):
         title = sys.argv[1]
     else:
         title = "pokemon_test"
-    with open(title+".txt","a") as f
+    with open(title+".txt","a") as f:
         f.write(pokemon_name+"\n")
         f.write("\n")
         f.write("HP: "+ str(hp)+ "\n")
@@ -35,13 +35,6 @@ def show_calc(hp,dex,ac,sac,move_list):
         for x in move_list:
             f.write(x+"\n")
         f.write("\n")
-#     f.close()
-    # print("HP: ",hp)
-    # print("DEX: ",dex)
-    # print("AC : ",ac)
-    # print("SAC: ",sac)
-    # for x in move_list:
-    #     print(x)
 
 
 def move_calc():
