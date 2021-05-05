@@ -1,22 +1,34 @@
+import pandas as pd
 import sys
 
+pokemon_stats = pd.read_csv("pokemon.csv")
+pokemon_moves = pd.read_csv("pokemon_move.csv")
 
-pokemon_name = input("Pokemon name: ")
+while True:
+    pokemon_name = input("Pokemon name: ")
+    filter_name = pokemon_stats.loc[pokemon_stats["Name"] == pokemon_name,"HP"]
+    if filter_name.empty:
+        print(pokemon_name + " not found")
+        continue
+    else:
+        break
+
 pokemon_lvl = int(input("insert pokemon lvl: "))
-pokemon_hp = int(input("insert base HP: "))
-pokemon_def = int(input("insert base def: "))
-pokemon_sp_def = int(input("insert base sp def: "))
-pokemon_speed = int(input("insert base speed: "))
-pokemon_att = int(input("insert base att: "))
-pokemon_sp_att = int(input("insert base sp att: "))
+pokemon_hp = pokemon_stats.loc[pokemon_stats["Name"] == pokemon_name,"HP"]
+pokemon_def = pokemon_stats.loc[pokemon_stats["Name"] == pokemon_name,"Defense"]
+pokemon_sp_def = pokemon_stats.loc[pokemon_stats["Name"] == pokemon_name,"Sp. Def"]
+pokemon_speed = pokemon_stats.loc[pokemon_stats["Name"] == pokemon_name,"Speed"]
+pokemon_att = pokemon_stats.loc[pokemon_stats["Name"] == pokemon_name,"Attack"]
+pokemon_sp_att = pokemon_stats.loc[pokemon_stats["Name"] == pokemon_name,"Sp. Atk"]
 # print(len(sys.argv))
+
 
 def basic_stat_calc():
     """Takes user input to calculate the output for the stat block"""
     hp = int(((pokemon_hp*0.1)*3)+pokemon_lvl)
-    dex = int((pokemon_speed*0.1)/2)
-    ac = int((pokemon_def*0.1)/2)
-    sac = int((pokemon_sp_def*0.1)/2)
+    dex = int(((pokemon_speed+pokemon_lvl)*0.1)/2)
+    ac = int(((pokemon_def+pokemon_lvl)*0.1)/2)
+    sac = int(((pokemon_sp_def+pokemon_lvl)*0.1)/2)
     return hp,dex,ac,sac
 
 
@@ -46,6 +58,15 @@ def move_calc():
         except ValueError:
             continue
         
+        # while True:
+        #     pokemon_move_name = input("Name of pokemon moves: ")
+        #     filter_name = pokemon_stats.loc[pokemon_stats["identifier"] == pokemon_move_name,"power"]
+        #     if filter_name.empty:
+        #         print(pokemon_move_name + " not found")
+        #         continue
+        #     else:
+        #         break
+
         pokemon_move_name = input("Name of pokemon moves: ")
         flag = input("Is the Pokemon move type same as pokemon type [y/n] ")
         if flag == 'y' or flag == 'Y':
@@ -56,9 +77,9 @@ def move_calc():
         
         flag1 = input("Is the Pokemon move a special or physical move [p/s]")
         if flag1 == 's' or flag1 == 'S':
-            att = int((pokemon_att*0.1)/2)
+            att = int(((pokemon_att+pokemon_lvl)*0.1)/2)
         elif flag1 == 'p' or flag1 == 'P':
-            att = int((pokemon_sp_att*0.1)/2)
+            att = int(((pokemon_sp_att+pokemon_lvl)*0.1)/2)
 
 
         if power >= 40  and power < 60:
@@ -136,4 +157,7 @@ if __name__ == '__main__':
     hp,dex,ac,sac = basic_stat_calc()
     move_list = move_calc()
     show_calc(hp,dex,ac,sac,move_list)
+    # print(pokemon_moves.head())
+    # print(filter_name.head())
+    # print(filter_name*5)
     
