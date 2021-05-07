@@ -1,25 +1,25 @@
 import pandas as pd
+import numpy as np
 import sys
 
 pokemon_stats = pd.read_csv("pokemon.csv")
 pokemon_moves = pd.read_csv("pokemon_move.csv")
 
 while True:
-    pokemon_name = input("Pokemon name: ")
-    filter_name = pokemon_stats.loc[pokemon_stats["Name"] == pokemon_name,"HP"]
+    pokemon_name = input("Pokemon name: ").lower()
+    filter_name = pokemon_stats.loc[pokemon_stats["Name"].str.lower() == pokemon_name]
     if filter_name.empty:
         print(pokemon_name + " not found")
-        continue
     else:
         break
 
 pokemon_lvl = int(input("insert pokemon lvl: "))
-pokemon_hp = pokemon_stats.loc[pokemon_stats["Name"] == pokemon_name,"HP"]
-pokemon_def = pokemon_stats.loc[pokemon_stats["Name"] == pokemon_name,"Defense"]
-pokemon_sp_def = pokemon_stats.loc[pokemon_stats["Name"] == pokemon_name,"Sp. Def"]
-pokemon_speed = pokemon_stats.loc[pokemon_stats["Name"] == pokemon_name,"Speed"]
-pokemon_att = pokemon_stats.loc[pokemon_stats["Name"] == pokemon_name,"Attack"]
-pokemon_sp_att = pokemon_stats.loc[pokemon_stats["Name"] == pokemon_name,"Sp. Atk"]
+pokemon_hp = pokemon_stats.loc[pokemon_stats["Name"].str.lower() == pokemon_name,"HP"]
+pokemon_def = pokemon_stats.loc[pokemon_stats["Name"].str.lower() == pokemon_name,"Defense"]
+pokemon_sp_def = pokemon_stats.loc[pokemon_stats["Name"].str.lower() == pokemon_name,"Sp. Def"]
+pokemon_speed = pokemon_stats.loc[pokemon_stats["Name"].str.lower() == pokemon_name,"Speed"]
+pokemon_att = pokemon_stats.loc[pokemon_stats["Name"].str.lower() == pokemon_name,"Attack"]
+pokemon_sp_att = pokemon_stats.loc[pokemon_stats["Name"].str.lower() == pokemon_name,"Sp. Atk"]
 # print(len(sys.argv))
 
 
@@ -52,27 +52,38 @@ def show_calc(hp,dex,ac,sac,move_list):
 def move_calc():
     """coverts the pokemon move power and translates it to dnd damage roll """
     move_list = []
-    for x in range(4):
-        try:
-            power = int(input("insert attack power "))
-        except ValueError:
-            continue
-        
-        # while True:
-        #     pokemon_move_name = input("Name of pokemon moves: ")
-        #     filter_name = pokemon_stats.loc[pokemon_stats["identifier"] == pokemon_move_name,"power"]
-        #     if filter_name.empty:
-        #         print(pokemon_move_name + " not found")
-        #         continue
-        #     else:
-        #         break
+    types = ["Fire","Water","Grass","Normal","Fighting","Flying","Poison",
+    "Ground","Rock","Bug","Ghost","Steel","Electric","Psychic","Ice",
+    "Dragon","Dark","Fairy"]
 
-        pokemon_move_name = input("Name of pokemon moves: ")
-        flag = input("Is the Pokemon move type same as pokemon type [y/n] ")
-        if flag == 'y' or flag == 'Y':
-            stb = 1
-        elif flag == 'n' or flag == 'N':
-            stb = 0
+    for x in range(4):
+        while True:
+            pokemon_move_name = input("Name of pokemon moves: ")
+            filter_move_power = pokemon_moves.loc[pokemon_moves["identifier"] == pokemon_move_name,"power"]
+            if filter_name.empty:
+                print(pokemon_move_name + " not found")
+            else:
+                break
+        
+        pokemon_move_type = pokemon_moves.loc[pokemon_moves["identifier"] == pokemon_move_name,"type_id"]
+        pokemon_type = pokemon_stats.loc[pokemon_stats["Name"].str.lower() == pokemon_name,"Type 1"]
+        pokemon_type2 = pokemon_stats.loc[pokemon_stats["Name"].str.lower() == pokemon_name,"Type 2"]
+
+        try:
+            power = int(filter_move_power)
+        except ValueError:
+            power = 0
+
+        stb = 0
+        for x in types:
+            try:    
+                if ((pokemon_type.str.contains(x).bool() and pokemon_move_type.str.contains(x).bool()) 
+                or (pokemon_type2.str.contains(x).bool() and pokemon_move_type.str.contains(x).bool())):
+                    print("jeff made it")
+                    stb = 1
+            except ValueError:
+                if pokemon_type.str.contains(x).bool() and pokemon_move_type.str.contains(x).bool():
+                    stb = 1
 
         
         flag1 = input("Is the Pokemon move a special or physical move [p/s]")
